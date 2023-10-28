@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html translate="no">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>XML Editor</title>
+    <link rel="stylesheet" href="index.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/uikit@3.17.6/dist/css/uikit.min.css" />
+    <script src="https://cdn.jsdelivr.net/npm/uikit@3.17.6/dist/js/uikit.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/uikit@3.17.6/dist/js/uikit-icons.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"
+        integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+</head>
+
+<body>
+    <main>
+        <div id="navegacao-mobile">
+            <ul class="uk-flex-center" uk-tab>
+                <li class="menu-data-set uk-active" data-id="editor"><a>Editor</a></li>
+                <li class="menu-data-set" data-id="arvore"><a>Visualização</a></li>
+            </ul>
+        </div>
+
+        <div class="uk-grid-divider" uk-grid>
+            <div class="data-set editor uk-width-1-2@m">
+                <div class="menu uk-padding-small">
+                    <div class="uk-flex uk-flex-between">
+                        <h5>Editor</h5>
+                        <div>
+                            <ul class="uk-iconnav">
+                                <li><a href="" uk-icon="icon: copy" title="Copiar conteúdo"></a></li>
+                                <li><a href="" uk-icon="icon: folder" title="Abrir arquivo"></a></li>
+                                <li><a href="" uk-icon="icon: download" title="Baixar arquivo"></a></li>
+                                <li><a href="" uk-icon="icon: expand" title="Fullscreen"></a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <hr>
+                </div>
+                <div id="editor">
+
+                </div>
+            </div>
+            <div class="data-set arvore uk-width-1-2@m">
+                <div class="menu uk-padding-small">
+                    <div class="uk-flex uk-flex-between">
+                        <h5>Visualização</h5>
+                        <ul class="uk-iconnav">
+                            <li><a href="" uk-icon="icon: expand" title="Fullscreen"></a></li>
+                        </ul>
+                    </div>
+                    <hr>
+                </div>
+                <div id="arvore">
+
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script type="module" src="index.js"></script>
+</body>
+
+</html>

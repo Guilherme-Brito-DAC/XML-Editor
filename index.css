@@ -1,0 +1,83 @@
+:root {
+    --menuSize: 109px;
+    --mainPadding: 2rem;
+}
+
+body {
+    /* overflow: hidden; */
+}
+
+.editor,
+.arvore {
+    height: calc(100vh - var(--menuSize) - var(--mainPadding));
+}
+
+#editor,
+#arvore {
+    height: 100%;
+}
+
+#arvore {
+    overflow: auto;
+    max-height: 100%;
+    width: 100%;
+}
+
+main {
+    padding: var(--mainPadding);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    margin: 0 !important;
+}
+
+#navegacao-mobile {
+    display: none;
+}
+
+@media only screen and (max-width: 959px) {
+    #navegacao-mobile {
+        display: block;
+    }
+
+    .arvore {
+        display: none;
+    }
+}
+
+* {
+    scrollbar-width: auto;
+    scrollbar-color: #c1c1c1 #ffffff;
+}
+
+*::-webkit-scrollbar {
+    width: 13px;
+}
+
+*::-webkit-scrollbar-track {
+    background: #ffffff;
+}
+
+*::-webkit-scrollbar-thumb {
+    background-color: #c1c1c1;
+    border-radius: 0px;
+    border: 0px solid #ffffff;
+}
+
+*::-webkit-scrollbar-thumb:hover {
+    background-color: #929291;
+}
+
+#arvore ul {
+    list-style: none;
+}
+
+.numero-de-filhos-label{
+    opacity: 0.5;
+    letter-spacing: 3px;
+}
