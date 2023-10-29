@@ -1,6 +1,6 @@
 import * as monaco from 'https://cdn.jsdelivr.net/npm/monaco-editor@0.39.0/+esm'
 import { baixarArquivo } from './util/utilHelper.js'
-import { formatarXML } from './util/xmlHelper.js'
+import { formatarXML, validarXML } from './util/xmlHelper.js'
 
 let editor
 
@@ -153,8 +153,14 @@ function onChangeXML() {
     try {
 
         const editorXML = editor.getValue()
+        toggleXMLInvalido(false)
 
         if (editorXML) {
+            if (!validarXML(editorXML)) {
+                toggleXMLInvalido(true)
+                return
+            }
+
             const arvore = construirArvoreXML(editorXML)
 
             if (arvore) {
@@ -168,6 +174,7 @@ function onChangeXML() {
         }
     } catch (error) {
         console.log(error)
+        toggleXMLInvalido(true)
     }
 }
 
@@ -287,6 +294,13 @@ function toggleLoading(ativar) {
         $("#loading").show()
     else
         $("#loading").hide()
+}
+
+function toggleXMLInvalido(ativar) {
+    if (ativar)
+        $(".informativo-erro").show()
+    else
+        $(".informativo-erro").hide()
 }
 
 function toggleElementoArvore() {

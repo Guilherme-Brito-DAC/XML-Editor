@@ -1,5 +1,14 @@
 function validarXML(xml) {
+    const parser = new DOMParser()
+
     try {
+        const doc = parser.parseFromString(xml, 'text/xml')
+
+        const errorNode = doc.querySelector("parsererror")
+
+        if (errorNode) {
+            return false
+        }
 
         return true
     } catch (error) {
@@ -14,7 +23,7 @@ function formatarXML(xml) {
 
         xml.split(/>\s*</).forEach(function (node) {
             if (node.match(/^\/\w/)) indent = indent.substring(tab.length)
-            
+
             formatted += indent + '<' + node + '>\r\n'
 
             if (node.match(/^<?\w[^>]*[^\/]$/)) indent += tab
