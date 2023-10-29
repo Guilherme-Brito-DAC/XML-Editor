@@ -1,15 +1,15 @@
 :root {
-    --menuSize: 109px;
+    --menuSize: 60px;
     --mainPadding: 2rem;
 }
 
 body {
-    /* overflow: hidden; */
+    overflow: hidden;
 }
 
 .editor,
 .arvore {
-    height: calc(100vh - var(--menuSize) - var(--mainPadding));
+    height: calc(100vh - var(--menuSize) - var(--mainPadding) - 160px);
 }
 
 #editor,
@@ -24,7 +24,8 @@ body {
 }
 
 main {
-    padding: var(--mainPadding);
+    height: calc(100vh - var(--menuSize) - var(--mainPadding) - 21px);
+    padding: 0 var(--mainPadding) var(--mainPadding) var(--mainPadding);
 }
 
 h1,
@@ -77,7 +78,24 @@ h6 {
     list-style: none;
 }
 
-.numero-de-filhos-label{
+.numero-de-filhos-label {
     opacity: 0.5;
     letter-spacing: 3px;
+}
+
+header {
+    height: var(--menuSize);
+    padding: 0 3rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+mark {
+    background: rgb(0, 208, 255) !important;
+    color: white !important;
+}
+
+img {
+    width: 18px;
 }

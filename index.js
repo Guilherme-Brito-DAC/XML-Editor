@@ -2,29 +2,40 @@ import * as monaco from 'https://cdn.jsdelivr.net/npm/monaco-editor@0.39.0/+esm'
 
 let editor
 
-let exemplo = `<bookstore>
-    <book ISBN="978-0451526531" category="Fiction">
-        <title>Pride and Prejudice</title>
-        <author>Jane Austen</author>
-        <price currency="USD">12.99</price>
-    </book>
-    <book ISBN="978-0061120084" category="Non-Fiction">
-        <title>To Kill a Mockingbird</title>
-        <author>Harper Lee</author>
-        <price currency="USD">10.99</price>
-    </book>
-    <book ISBN="978-0743273565" category="Fiction">
-        <title>The Great Gatsby</title>
-        <author>F. Scott Fitzgerald</author>
-        <price currency="USD">11.99</price>
-    </book>
-</bookstore>`
-
 $(document).ready(function () {
     iniciarMonaco()
+    adicionarLabels()
 
     $(".menu-data-set").click(function () {
         menuDataSet($(this))
+    })
+
+    $(".menu-data-set").click(function () {
+        menuDataSet($(this))
+    })
+
+    $("#btn_copiarconteudo").click(function () {
+        navigator.clipboard.writeText(editor.getValue())
+    })
+
+    $("#btn_abrirarquivo").click(function () {
+
+    })
+
+    $("#btn_baixararquivo").click(function () {
+
+    })
+
+    $("#btn_fullscreeneditor").click(function () {
+
+    })
+
+    $("#btn_fullscreenvisualizacao").click(function () {
+
+    })
+
+    $("#txt_pesquisar").on("keyup", function () {
+        pesquisar($("#txt_pesquisar").val())
     })
 
     $(window).resize(function () {
@@ -58,25 +69,53 @@ function iniciarMonaco() {
         monaco.editor.defineTheme('custom', {
             base: 'vs',
             inherit: true,
-            // colors: {
-            //     'editor.background': '#1e1f23',
-            // },
             rules: [],
         })
 
-        // monaco.editor.setTheme('custom')
-
         editor = monaco.editor.create(document.getElementById("editor"), {
-            value: exemplo,
+            value: `<bookstore>
+    <book ISBN="978-0451526531" category="Fiction">
+        <title>Pride and Prejudice</title>
+        <author>Jane Austen</author>
+        <price currency="USD">12.99</price>
+    </book>
+    <book ISBN="978-0061120084" category="Non-Fiction">
+        <title>To Kill a Mockingbird</title>
+        <author>Harper Lee</author>
+        <price currency="USD">10.99</price>
+    </book>
+    <book ISBN="978-0743273565" category="Fiction">
+        <title>The Great Gatsby</title>
+        <author>F. Scott Fitzgerald</author>
+        <price currency="USD">11.99</price>
+    </book>
+</bookstore>`,
             language: "xml",
             automaticLayout: true,
         })
 
         editor.getModel().onDidChangeContent((event) => {
-            $("#arvore").html(construirArvoreXML(editor.getValue()))
+            onChangeXML()
         })
 
-        $("#arvore").html(construirArvoreXML(editor.getValue()))
+        onChangeXML()
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+function onChangeXML() {
+    try {
+
+        const editorXML = editor.getValue()
+
+        if (editorXML) {
+            const arvore = construirArvoreXML(editorXML)
+
+            if (arvore) {
+                $("#arvore").html(arvore)
+            }
+        }
     } catch (error) {
         console.log(error)
     }
@@ -132,6 +171,31 @@ function construirArvoreXML(xml) {
         else
             return transformarNode(xmlDoc)
 
+    } catch (error) {
+        console.log(error)
+
+        return null
+    }
+}
+
+function adicionarLabels() {
+    $(".tippy").each(function () {
+        tippy(`#${$(this).attr('id')}`, {
+            content: $(this).attr("title"),
+        })
+
+        $(this).removeAttr("title")
+    })
+}
+
+function pesquisar(texto) {
+    try {
+        $("#arvore").find("mark").each(function () {
+            $(this).replaceWith($(this).text())
+        })
+
+        if (texto && texto.trim())
+            $("#arvore").html($("#arvore").html().replace(new RegExp(texto + "(?=[^>]*<)", "ig"), "<mark>$&</mark>"))
     } catch (error) {
         console.log(error)
     }
