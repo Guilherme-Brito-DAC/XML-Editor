@@ -288,11 +288,20 @@ function toggleElementoArvore() {
     $(".colapsar").on("click", function () {
         if ($(this).attr("uk-icon") == "icon: chevron-down") {
             $(this).attr("uk-icon", "icon: chevron-up")
+
             $(this).parent().find("ul").hide()
         }
         else {
             $(this).attr("uk-icon", "icon: chevron-down")
-            $(this).parent().find("ul").show()
+
+            let ULs = Array.from($(this).parent().find("ul"))
+
+            ULs.forEach(ul => {
+                if ($(ul).parent().find("> .colapsar").length && $(ul).parent().find("> .colapsar").attr("uk-icon") == "icon: chevron-up")
+                    $(ul).hide()
+                else
+                    $(ul).show()
+            })
         }
     })
 }
