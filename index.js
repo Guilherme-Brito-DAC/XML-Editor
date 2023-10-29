@@ -298,6 +298,8 @@ function pesquisar(texto) {
 
         if (texto && texto.trim())
             $("#arvore").html($("#arvore").html().replace(new RegExp(texto + "(?=[^>]*<)", "ig"), "<mark>$&</mark>"))
+
+        toggleElementoArvore()
     } catch (error) {
         console.log(error)
     }
@@ -318,7 +320,7 @@ function toggleXMLInvalido(ativar) {
 }
 
 function toggleElementoArvore() {
-    $(".colapsar").on("click", function () {
+    $(".colapsar").unbind( "click" ).on("click", function () {
         if ($(this).attr("uk-icon") == "icon: chevron-down") {
             $(this).attr("uk-icon", "icon: chevron-up")
 
