@@ -128,10 +128,18 @@ img {
     position: fixed !important;
     width: 100vw !important;
     height: 100vh !important;
-    z-index: 999;
+    z-index: 99999999;
     background: white !important;
     margin: 0 !important;
     padding: 0 !important;
     top: 0;
     left: 0;
+}
+
+.nested {
+    display: none;
+}
+
+.active {
+    display: block;
 }

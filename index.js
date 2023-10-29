@@ -79,6 +79,8 @@ $(document).ready(function () {
         menuDataSet()
     })
 
+    toggleElementoArvore()
+
     toggleLoading(true)
 
     setTimeout(() => {
@@ -201,7 +203,7 @@ function construirArvoreXML(xml) {
             const atributos = renderAtributos(node)
 
             if (numeroDeFilhos) {
-                html += `<li><a href="" uk-icon="icon: chevron-down"></a> ${nome}  <span class="numero-de-filhos-label">(${numeroDeFilhos})</span> ${atributos}`
+                html += `<li><a class="colapsar" uk-icon="icon: chevron-down"></a> ${nome}  <span class="numero-de-filhos-label">(${numeroDeFilhos})</span> ${atributos}`
 
                 html += '<ul>';
 
@@ -280,4 +282,17 @@ function toggleLoading(ativar) {
         $("#loading").show()
     else
         $("#loading").hide()
+}
+
+function toggleElementoArvore() {
+    $(".colapsar").on("click", function () {
+        if ($(this).attr("uk-icon") == "icon: chevron-down") {
+            $(this).attr("uk-icon", "icon: chevron-up")
+            $(this).parent().find("ul").hide()
+        }
+        else {
+            $(this).attr("uk-icon", "icon: chevron-down")
+            $(this).parent().find("ul").show()
+        }
+    })
 }
