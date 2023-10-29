@@ -180,6 +180,8 @@ function onChangeXML() {
 
 function construirArvoreXML(xml) {
     try {
+        toggleLoading(true)
+
         const xmlDoc = new DOMParser().parseFromString(xml, 'text/xml')
 
         function renderAtributos(node) {
@@ -241,13 +243,25 @@ function construirArvoreXML(xml) {
             return html
         }
 
-        if (xmlDoc.childNodes[0])
-            return transformarNode(xmlDoc.childNodes[0])
-        else
-            return transformarNode(xmlDoc)
 
+        if (xmlDoc.childNodes[0]) {
+            const resultado = transformarNode(xmlDoc.childNodes[0])
+
+            toggleLoading(false)
+
+            return resultado
+        }
+        else {
+            const resultado = transformarNode(xmlDoc)
+
+            toggleLoading(false)
+
+            return resultado
+        }
     } catch (error) {
         console.log(error)
+
+        toggleLoading(false)
 
         return null
     }
