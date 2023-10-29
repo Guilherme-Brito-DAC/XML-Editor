@@ -159,7 +159,12 @@ function onChangeXML() {
 
             if (arvore) {
                 $("#arvore").html(arvore)
+
+                toggleElementoArvore()
             }
+        }
+        else {
+            $("#arvore").html("")
         }
     } catch (error) {
         console.log(error)
