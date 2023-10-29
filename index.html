@@ -16,10 +16,16 @@
 </head>
 
 <body>
+    <div id="loading">
+        <span uk-spinner="ratio: 2.5"></span>
+    </div>
+
     <header>
         <h3>XML Editor</h3>
-        <div>
-            <a href="https://github.com/Guilherme-Brito-DAC/XML-Editor" target="_blank" class="tippy" uk-icon="icon: github-alt" title="Repo"></a>
+        <div class="uk-flex uk-flex-between uk-flex-middle" style="gap:10px">
+
+            <a href="https://github.com/Guilherme-Brito-DAC/XML-Editor" target="_blank" class="tippy"
+                uk-icon="icon: github-alt" title="Repo"></a>
         </div>
     </header>
     <hr class="uk-divider-icon">
@@ -37,12 +43,15 @@
                     <div class="uk-flex uk-flex-between">
                         <h5>Editor</h5>
                         <div class="uk-flex uk-flex-middle" style="gap:10px">
-                            <button type="button" class="uk-button uk-button-default">Formartar</button>
+                            <button type="button" id="btn_formatar" class="uk-button uk-button-default">Formartar</button>
                             <ul class="uk-iconnav">
                                 <li><a id="btn_copiarconteudo" class="tippy" uk-icon="icon: copy"
                                         title="Copiar conteúdo"></a></li>
-                                <li><a id="btn_abrirarquivo" class="tippy" uk-icon="icon: folder"
-                                        title="Abrir arquivo"></a></li>
+                                <li>
+                                    <input type="file" id="arquivoinput" style="display: none;">
+                                    <a id="btn_abrirarquivo" class="tippy" uk-icon="icon: folder"
+                                        title="Abrir arquivo"></a>
+                                </li>
                                 <li><a id="btn_baixararquivo" class="tippy" uk-icon="icon: download"
                                         title="Baixar arquivo"></a></li>
                                 <li><a id="btn_fullscreeneditor" class="tippy" uk-icon="icon: expand"
@@ -61,6 +70,10 @@
                     <div class="uk-flex uk-flex-between">
                         <h5>Visualização</h5>
                         <div class="uk-flex uk-flex-middle" style="gap:10px">
+                            <div class="uk-grid-small uk-child-width-auto uk-grid">
+                                <label><input class="uk-checkbox" id="esconderAtributos" type="checkbox"> Esconder
+                                    atributos</label>
+                            </div>
                             <div class="uk-inline">
                                 <span class="uk-form-icon" uk-icon="icon: search"></span>
                                 <input class="uk-input" id="txt_pesquisar" placeholder="Pesquise...">

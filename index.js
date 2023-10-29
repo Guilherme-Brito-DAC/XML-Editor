@@ -1,4 +1,6 @@
 import * as monaco from 'https://cdn.jsdelivr.net/npm/monaco-editor@0.39.0/+esm'
+import { baixarArquivo } from './util/utilHelper.js'
+import { formatarXML } from './util/xmlHelper.js'
 
 let editor
 
@@ -16,22 +18,57 @@ $(document).ready(function () {
 
     $("#btn_copiarconteudo").click(function () {
         navigator.clipboard.writeText(editor.getValue())
+
+        const range = editor.getModel().getFullModelRange()
+
+        editor.setSelection(range)
     })
 
     $("#btn_abrirarquivo").click(function () {
+        $("#arquivoinput").click()
+    })
 
+    $("#btn_formatar").click(function () {
+        editor.setValue(formatarXML(editor.getValue()))
+    })
+
+    $("#arquivoinput").change(function (e) {
+        const arquivo = e.target.files[0]
+        const reader = new FileReader()
+
+        reader.onload = function (event) {
+            const conteudo = event.target.result
+
+            editor.setValue(conteudo)
+        }
+
+        reader.readAsText(arquivo)
     })
 
     $("#btn_baixararquivo").click(function () {
-
+        toggleLoading(true)
+        setTimeout(() => {
+            toggleLoading(false)
+            baixarArquivo(editor.getValue(), `arquivo.xml`)
+        }, 200)
     })
 
     $("#btn_fullscreeneditor").click(function () {
-
+        if ($('.editor').hasClass("fullscreen"))
+            $('.editor').removeClass("fullscreen")
+        else
+            $('.editor').addClass("fullscreen")
     })
 
     $("#btn_fullscreenvisualizacao").click(function () {
+        if ($('.arvore').hasClass("fullscreen"))
+            $('.arvore').removeClass("fullscreen")
+        else
+            $('.arvore').addClass("fullscreen")
+    })
 
+    $("#esconderAtributos").change(function () {
+        toggleAtributos()
     })
 
     $("#txt_pesquisar").on("keyup", function () {
@@ -41,6 +78,12 @@ $(document).ready(function () {
     $(window).resize(function () {
         menuDataSet()
     })
+
+    toggleLoading(true)
+
+    setTimeout(() => {
+        toggleLoading(false)
+    }, 200)
 })
 
 function menuDataSet(element) {
@@ -125,6 +168,22 @@ function construirArvoreXML(xml) {
     try {
         const xmlDoc = new DOMParser().parseFromString(xml, 'text/xml')
 
+        function renderAtributos(node) {
+            let html = "<span class='atributo'>"
+
+            $(node).each(function () {
+                $.each(this.attributes, function () {
+                    if (this.specified) {
+                        html += ` ${this.name} : ${this.value} `
+                    }
+                })
+            })
+
+            html += "</span>"
+
+            return html
+        }
+
         function transformarNode(node) {
             let html = ''
 
@@ -139,8 +198,10 @@ function construirArvoreXML(xml) {
 
             const numeroDeFilhos = $(node).children().length
 
+            const atributos = renderAtributos(node)
+
             if (numeroDeFilhos) {
-                html += `<li><a href="" uk-icon="icon: chevron-down"></a> ${nome}  <span class="numero-de-filhos-label">(${numeroDeFilhos})</span>`
+                html += `<li><a href="" uk-icon="icon: chevron-down"></a> ${nome}  <span class="numero-de-filhos-label">(${numeroDeFilhos})</span> ${atributos}`
 
                 html += '<ul>';
 
@@ -156,7 +217,7 @@ function construirArvoreXML(xml) {
             else {
                 html += '<ul>';
 
-                html += `<li>${node.nodeName} : ${nome}`
+                html += `<li>${node.nodeName} : ${nome} ${atributos}`
 
                 html += '</ul>'
             }
@@ -175,6 +236,19 @@ function construirArvoreXML(xml) {
         console.log(error)
 
         return null
+    }
+}
+
+function toggleAtributos() {
+    try {
+        if ($("#esconderAtributos").is(":checked")) {
+            $(".atributo").hide()
+        }
+        else {
+            $(".atributo").show()
+        }
+    } catch (error) {
+        console.log(error)
     }
 }
 
@@ -199,4 +273,11 @@ function pesquisar(texto) {
     } catch (error) {
         console.log(error)
     }
+}
+
+function toggleLoading(ativar) {
+    if (ativar)
+        $("#loading").show()
+    else
+        $("#loading").hide()
 }
