@@ -42,48 +42,50 @@
             <div class="data-set editor uk-width-1-2@m">
                 <div class="menu uk-padding-small">
                     <div class="uk-flex uk-flex-between" style="flex-wrap: wrap;">
-                        <h5>Editor</h5>
+                        <div class="uk-flex uk-flex-middle" style="gap: 10px;">
+                            <h5>Editor</h5>
+                            <a class="tippy" uk-icon="icon: info" title="Informações"></a>
+                            <div class="uk-width-large" uk-dropdown>
+                                <div class="uk-drop-grid uk-child-width-1-2@m" uk-grid>
+                                    <div>
+                                        <ul class="uk-nav uk-dropdown-nav">
+                                            <li class="uk-nav-header">Edição básica</li>
+                                            <li><b>Ctrl+X</b> Linha de corte (seleção vazia)</li>
+                                            <li><b>Ctrl+C</b> Copiar linha (seleção vazia)</li>
+                                            <li><b>Alt + ↑ / ↓</b> Mover linha para cima/para baixo</li>
+                                            <li><b>Shift+Alt+ ↓ / ↑ </b> Copiar linha para cima/para baixo</li>
+                                            <li><b>Ctrl+Shift+K</b> Excluir linha</li>
+                                            <li><b>Ctrl+↑ / ↓</b> Rolar linha para cima/para baixo</li>
+                                            <li class="uk-nav-divider"></li>
+                                        </ul>
+                                    </div>
+                                    <div>
+                                        <ul class="uk-nav uk-dropdown-nav">
+                                            <li class="uk-nav-header">Pesquisar e substituir</li>
+                                            <li><b>Ctrl+F</b> Localizar</li>
+                                            <li><b>Ctrl+H</b> Substituir</li>
+                                            <li><b>F3 / Shift+F3</b> Localizar próximo/anterior</li>
+                                            <li><b>Alt+Enter</b> Seleciona todas as ocorrências de Encontrar
+                                                correspondência</li>
+                                            <li><b>Ctrl+D</b> Adicionar seleção à próxima correspondência de
+                                                busca</li>
+                                            <li><b>Ctrl+K</b> Ctrl+D Mover a última seleção para a próxima
+                                                Encontrar
+                                                correspondência</li>
+                                            <li class="uk-nav-divider"></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                         <div class="uk-flex uk-flex-middle" style="gap:10px">
                             <button type="button" id="btn_formatar"
                                 class="uk-button uk-button-default">Formartar</button>
                             <ul class="uk-iconnav">
-                                <li>
-                                    <a class="tippy" uk-icon="icon: info" title="Informações"></a>
-                                    <div class="uk-width-large" uk-dropdown>
-                                        <div class="uk-drop-grid uk-child-width-1-2@m" uk-grid>
-                                            <div>
-                                                <ul class="uk-nav uk-dropdown-nav">
-                                                    <li class="uk-nav-header">Edição básica</li>
-                                                    <li><b>Ctrl+X</b> Linha de corte (seleção vazia)</li>
-                                                    <li><b>Ctrl+C</b> Copiar linha (seleção vazia)</li>
-                                                    <li><b>Alt + ↑ / ↓</b> Mover linha para cima/para baixo</li>
-                                                    <li><b>Shift+Alt+ ↓ / ↑ </b> Copiar linha para cima/para baixo</li>
-                                                    <li><b>Ctrl+Shift+K</b> Excluir linha</li>
-                                                    <li><b>Ctrl+↑ / ↓</b> Rolar linha para cima/para baixo</li>
-                                                    <li class="uk-nav-divider"></li>
-                                                </ul>
-                                            </div>
-                                            <div>
-                                                <ul class="uk-nav uk-dropdown-nav">
-                                                    <li class="uk-nav-header">Pesquisar e substituir</li>
-                                                    <li><b>Ctrl+F</b> Localizar</li>
-                                                    <li><b>Ctrl+H</b> Substituir</li>
-                                                    <li><b>F3 / Shift+F3</b> Localizar próximo/anterior</li>
-                                                    <li><b>Alt+Enter</b> Seleciona todas as ocorrências de Encontrar
-                                                        correspondência</li>
-                                                    <li><b>Ctrl+D</b> Adicionar seleção à próxima correspondência de
-                                                        busca</li>
-                                                    <li><b>Ctrl+K</b> Ctrl+D Mover a última seleção para a próxima
-                                                        Encontrar
-                                                        correspondência</li>
-                                                    <li class="uk-nav-divider"></li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </li>
                                 <li><a id="btn_copiarconteudo" class="tippy" uk-icon="icon: copy"
                                         title="Copiar conteúdo"></a></li>
+                                <li> <a class="tippy" href="#edicao-em-massa-modal" uk-toggle uk-icon="icon: file-edit"
+                                        title="Edição em massa"></a></li>
                                 <li>
                                     <input type="file" id="arquivoinput" style="display: none;">
                                     <a id="btn_abrirarquivo" class="tippy" uk-icon="icon: folder"
@@ -136,6 +138,45 @@
             </div>
         </div>
     </main>
+
+    <!-- Edição em massa -->
+    <div id="edicao-em-massa-modal" uk-modal>
+        <div class="uk-modal-dialog uk-modal-body">
+            <button class="uk-modal-close-default" type="button" uk-close></button>
+            <div>
+                <label>Remover elemento</label>
+
+                <div class="uk-margin">
+                    <label class="uk-form-label" for="select-elemento">Buscar Elemento</label>
+                    <div class="uk-form-controls">
+                        <select class="uk-select" id="select-elemento">
+                        </select>
+                    </div>
+                </div>
+                <div class="uk-margin">
+                    <label class="uk-form-label" for="select-atributo">Que Contenha o Atributo (Opcional)</label>
+                    <div class="uk-form-controls">
+                        <select class="uk-select" id="select-atributo" disabled>
+                        </select>
+                    </div>
+                </div>
+                <div class="uk-margin">
+                    <label class="uk-form-label" for="input-valor">Com o Valor (Opcional)</label>
+                    <div class="uk-form-controls">
+                        <input class="uk-input" id="input-valor" type="text" placeholder="" disabled>
+                    </div>
+                </div>
+                <div class="uk-grid-small uk-child-width-auto uk-grid">
+                    <label><input class="uk-checkbox" id="input-aplicar-no-pai" type="checkbox"> Remover elemento anterior</label>
+                </div>
+            </div>
+            <p class="uk-text-right">
+                <button class="uk-button uk-button-default uk-modal-close" id="cancelar-edicao-em-massa"
+                    type="button">Cancelar</button>
+                <button class="uk-button uk-button-primary" id="aplicar-edicao-em-massa" type="button">Remover</button>
+            </p>
+        </div>
+    </div>
 
     <script type="module" src="index.js"></script>
 </body>

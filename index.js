@@ -33,16 +33,20 @@ $(document).ready(function () {
     })
 
     $("#arquivoinput").change(function (e) {
-        const arquivo = e.target.files[0]
-        const reader = new FileReader()
+        try {
+            const arquivo = e.target.files[0]
+            const reader = new FileReader()
 
-        reader.onload = function (event) {
-            const conteudo = event.target.result
+            reader.onload = function (event) {
+                const conteudo = event.target.result
 
-            editor.setValue(conteudo)
+                editor.setValue(conteudo)
+            }
+
+            reader.readAsText(arquivo)
+        } catch (error) {
+            console.log(error)
         }
-
-        reader.readAsText(arquivo)
     })
 
     $("#btn_baixararquivo").click(function () {
@@ -77,6 +81,37 @@ $(document).ready(function () {
 
     $(window).resize(function () {
         menuDataSet()
+    })
+
+    $("#cancelar-edicao-em-massa").click(function () {
+        const elemento = $("#select-elemento").val()
+        const atributo = $("#select-atributo").val()
+        const valor = $("#input-valor").val()
+        const valorParaSubstituir = $("#input-valor-para-substituir").val()
+        const aplicarNoPai = $("#input-aplicar-no-pai").prop('checked')
+
+        if (!elemento) return
+
+        let seletor = $(elemento)
+
+        if (atributo) {
+            seletor = $(`${elemento}[${atributo}='${valor}']`)
+        }
+
+        if (aplicarNoPai) seletor = $(seletor).parent()
+
+        if (seletor) {
+            $(seletor).remove()
+        }
+    })
+
+    $("#aplicar-edicao-em-massa").click(function () {
+        $("#select-elemento").html("")
+        $("#select-atributo").html("")
+        $("#select-atributo").attr("disabled", "disabled")
+        $("#input-valor").attr("disabled", "disabled")
+        $("#input-valor").val("")
+        $("#input-aplicar-no-pai").prop('checked', false)
     })
 
     toggleElementoArvore()
@@ -167,11 +202,14 @@ function onChangeXML() {
                 $("#arvore").html(arvore)
 
                 toggleElementoArvore()
+                toggleAtributos()
             }
         }
         else {
             $("#arvore").html("")
         }
+
+        carregarSelectElemento()
     } catch (error) {
         console.log(error)
         toggleXMLInvalido(true)
@@ -320,7 +358,7 @@ function toggleXMLInvalido(ativar) {
 }
 
 function toggleElementoArvore() {
-    $(".colapsar").unbind( "click" ).on("click", function () {
+    $(".colapsar").unbind("click").on("click", function () {
         if ($(this).attr("uk-icon") == "icon: chevron-down") {
             $(this).attr("uk-icon", "icon: chevron-up")
 
@@ -339,4 +377,58 @@ function toggleElementoArvore() {
             })
         }
     })
+}
+
+function carregarSelectElemento() {
+    try {
+        const parser = new DOMParser()
+        const valor = editor.getValue()
+
+        const xml = parser.parseFromString(valor, 'text/xml')
+
+        let elementos = [...new Set(Array.from($(xml).find('*')).map(c => $(c).prop('nodeName')))]
+
+        $("#select-elemento").html("")
+
+        elementos.forEach(elemento => {
+            $("#select-elemento").append(new Option(elemento, elemento))
+        })
+
+        $("#select-atributo").html("")
+
+        $("#select-atributo").attr("disabled", "disabled")
+
+        $("#select-elemento").on("change", function () {
+            $("#select-atributo").html("")
+
+            let atributos = []
+
+            $(xml).find(`${$("#select-elemento").val()}:first`).each(function () {
+                $.each(this.attributes, function () {
+                    atributos.push(this.name)
+                })
+            })
+
+            atributos.forEach(atributo => {
+                $("#select-atributo").removeAttr("disabled")
+
+                $("#select-atributo").append(new Option(atributo, atributo))
+            })
+
+            $("#select-atributo").change()
+        })
+
+        $("#select-atributo").on("change", function () {
+            if ($("#select-atributo").val()) {
+                $("#input-valor").removeAttr("disabled")
+            } else {
+                $("#input-valor").attr("disabled", "disabled")
+                $("#input-valor").val("")
+            }
+        })
+
+        $("#select-elemento").change()
+    } catch (error) {
+        console.log(error)
+    }
 }
