@@ -8,6 +8,10 @@ $(document).ready(function () {
     iniciarMonaco()
     adicionarLabels()
 
+    $(".lingua-opcao").click(function () {
+        linguagem($(this).attr("language"))
+    })
+
     $(".menu-data-set").click(function () {
         menuDataSet($(this))
     })
@@ -431,4 +435,26 @@ function carregarSelectElemento() {
     } catch (error) {
         console.log(error)
     }
+}
+
+function linguagem(lingua) {
+    if (lingua == "pt")
+        $("#linguaBotao > span").text("Português")
+    else if (lingua == "en")
+        $("#linguaBotao > span").text("English")
+    else
+        $("#linguaBotao > span").text("Español")
+
+    $.getJSON("language.json", function (json) {
+        const labels = json[lingua]
+
+        Object.keys(labels).forEach(function (label) {
+            const texto = labels[label]
+
+            if ($(`[data-label='${label}']`).text())
+                $(`[data-label='${label}']`).text(texto)
+
+            $(`[data-label='${label}']`).attr("title", texto)
+        })
+    })
 }
